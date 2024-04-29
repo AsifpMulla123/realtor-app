@@ -2,9 +2,19 @@ import React, { useState } from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import OAuth from "../components/OAuth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { db } from "../firebase";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -16,6 +26,32 @@ const SignUp = () => {
       ...prevState,
       [e.target.id]: e.target.value,
     }));
+  }
+  async function handleSubmit(e) {
+    e.preventDefault();
+    try {
+      const auth = getAuth();
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      updateProfile(auth.currentUser, {
+        displayName: name,
+      });
+      const user = userCredential.user;
+      const formDatacopy = { ...formData };
+      delete formDatacopy.password;
+      formData.timestamp = serverTimestamp();
+      await setDoc(doc(db, "users", user.uid), formDatacopy);
+      console.log(user);
+      // toast.success("Sign up was successfull");
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong with the registration");
+    }
+    // console.log("Asif");
   }
   return (
     <section>
@@ -29,7 +65,7 @@ const SignUp = () => {
           />
         </div>
         <div className="w-full md:w-[67%] lg:w-[40%] lg:ml-20">
-          <form>
+          <form onSubmit={handleSubmit}>
             <input
               type="text"
               className="w-full rounded px-4 py-2 text-gray-700 bg-white transition ease-in-out mb-6"
