@@ -1,11 +1,23 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import OAuth from "../components/OAuth";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { toast } from "react-toastify";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   function onchange(e) {
     setEmail(e.target.value);
+  }
+  async function handleSubmit(e) {
+    e.preventDefault();
+    try {
+      const auth = getAuth();
+      await sendPasswordResetEmail(auth, email);
+      toast.success("Email was sent");
+    } catch (error) {
+      toast.error("Could not send reset password");
+    }
   }
   return (
     <section>
@@ -19,7 +31,7 @@ const ForgotPassword = () => {
           />
         </div>
         <div className="w-full md:w-[67%] lg:w-[40%] lg:ml-20">
-          <form>
+          <form onSubmit={handleSubmit}>
             <input
               type="email"
               className="w-full rounded px-4 py-2 text-gray-700 bg-white transition ease-in-out mb-6"
@@ -52,7 +64,7 @@ const ForgotPassword = () => {
               className="w-full bg-blue-600 text-white px-7 py-3 rounded text-sm font-bold uppercase shadow-md hover:bg-blue-700 transition duration-150 ease-in-out hover:shadow-lg active:bg-blue-800"
             >
               Send Reset password
-            </button> 
+            </button>
             <div className="flex items-center my-4 before:border-t before:flex-1  before:border-gray-300 after:border-t after:flex-1  after:border-gray-300">
               <p className="text-center font-semibold mx-4">OR</p>
             </div>
