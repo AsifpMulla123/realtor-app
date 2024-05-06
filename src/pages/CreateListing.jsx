@@ -130,6 +130,7 @@ const CreateListing = () => {
       ...formData,
       imgUrls,
       timestamp: serverTimestamp(),
+      userRef: auth.currentUser.uid,
     };
     delete formDataCopy.images;
     !formDataCopy.offer && delete formDataCopy.discountedPrice;
@@ -272,7 +273,7 @@ const CreateListing = () => {
           value={address}
           onChange={handleChange}
           placeholder="Address"
-          maxLength={"32"}
+          // maxLength={"32"}
           minLength={"10"}
           required
           className="rounded w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 transition duration-150 ease-in-out focus:text-gray-700 focus:bg-white focus:border-slate-600 mb-6"
@@ -284,7 +285,7 @@ const CreateListing = () => {
           value={description}
           onChange={handleChange}
           placeholder="Description"
-          maxLength={"32"}
+          // maxLength={"32"}
           minLength={"10"}
           required
           className="rounded w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 transition duration-150 ease-in-out focus:text-gray-700 focus:bg-white focus:border-slate-600 mb-6"
