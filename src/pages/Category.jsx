@@ -25,7 +25,7 @@ const Category = () => {
         const listingRef = collection(db, "listings");
         const q = query(
           listingRef,
-          where("offer", "==", params.categoryName),
+          where("type", "==", params.categoryName),
           orderBy("timestamp", "desc"),
           limit(8)
         );
@@ -52,7 +52,7 @@ const Category = () => {
       const listingRef = collection(db, "listings");
       const q = query(
         listingRef,
-        where("offer", "==", params.categoryName),
+        where("type", "==", params.categoryName),
         orderBy("timestamp", "desc"),
         startAfter(lastFetchedListing),
         limit(4)
@@ -105,7 +105,12 @@ const Category = () => {
           )}
         </>
       ) : (
-        <p>There are no listings</p>
+        <p>
+          There are no current{" "}
+          {params.categoryName === "rent"
+            ? "places for rent"
+            : "places for sale"}
+        </p>
       )}
     </div>
   );
