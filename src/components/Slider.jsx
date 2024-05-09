@@ -58,7 +58,7 @@ const Slider = () => {
                   background: `url(${data.imgUrls[0]}) center,no-repeat`,
                   backgroundSize: "cover",
                 }}
-                className="w-full h-[300px] overflow-hidden relative"
+                className="w-full h-[400px] overflow-hidden relative"
               ></div>
               <p className="text-[#f1fa33] absolute left-1 top-3 font-medium max-w-[90%] bg-[#457b9d] shadow-lg opacity-90 p-2 rounded-br-3xl">
                 {data.name}
